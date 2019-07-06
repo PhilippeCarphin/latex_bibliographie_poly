@@ -1,0 +1,56 @@
+\documentclass[12pt,titlepage]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage{graphicx}
+
+\usepackage{geometry}
+\usepackage{setspace}
+
+\geometry{letterpaper,tmargin=.3in,bmargin=1in,lmargin=.3in,rmargin=.3in}
+
+\linespread{1.5}
+\setlength\parindent{0in}
+
+
+\newcommand{\letitre}{((Titre))}
+\newcommand{\presentea}{((Prof))}
+\newcommand{\fichierlogo}{logo_poly.pdf}
+\newcommand{\organisation}{Département de génie informatique et génie logiciel}
+\newcommand{\lesiglecours}{((Sigle))}
+\newcommand{\letitrecours}{((Titre du cours))}
+\newcommand{\lematricule}{((Matricule))}
+\newcommand{\lauteur}{((Nom))}
+
+\begin{document}
+\begin{titlepage}
+
+\parbox[c]{1in}{\includegraphics[height=1in]{\fichierlogo}}
+\hfill \parbox[c]{3in}{\Large\raggedleft\organisation} \\
+%
+%
+\begin{center}
+\vfill
+%
+%
+%
+\large
+\lesiglecours \\
+\letitrecours
+%
+%
+\vfill
+%
+%
+\parbox[b]{0.6\textwidth}{\center\letitre\\}\\
+%
+{\small Travail présenté à
+\presentea\\}
+%
+\vfill
+Par\\
+\lauteur (\lematricule)
+
+\end{center}
+\end{titlepage}
+\end{document}

@@ -1,0 +1,44 @@
+\documentclass[12pt]{article}
+
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[frenchb]{babel}
+\usepackage[final]{pdfpages}
+
+
+\usepackage{apacite}
+\geometry{letterpaper,tmargin=1in,bmargin=1in,lmargin=1.25in,rmargin=1.25in}
+
+\linespread{1.5}
+
+\begin{document}
+
+\includepdf[pages=1]{page_titre.pdf}
+\thispagestyle{empty}
+
+
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+\section*{Introduction}
+
+En effet, on peut affirmer \og bla bla bla \fg \citeA{5396316}.
+
+De plus \citeA{monbiot} nous dit
+
+  \begin{quote}
+    \singlespacing
+  [...] people’s mood and emotions have been successfully assessed from spoken and written language, video, or wearable devices and smartphone sensor data.
+  \end{quote}
+
+
+\newpage
+
+\bibliography{bibdb.bib}
+\bibliographystyle{apacite}
+
+\end{document}
