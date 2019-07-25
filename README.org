@@ -1,0 +1,203 @@
+* Template LaTeX pour Poly
+
+** LaTeX général
+
+*** Marges
+#+BEGIN_SRC latex
+\usepackage{geometry}
+\geometry{letterpaper,tmargin=1in,bmargin=1in,lmargin=1.25in,rmargin=1.25in}
+% [...]
+\begin{document}
+#+END_SRC
+
+*** Interligne 1.5
+
+#+BEGIN_SRC latex
+\linespread{1.5}
+% [...]
+\begin{document}
+#+END_SRC
+
+*** Français
+Le plus important pour faire du LaTeX en français, c'est ce package permettant à
+LaTeX de comprendre des fichiers contenant des caractères accentués:
+#+BEGIN_SRC latex
+\usepackage[utf8]{inputenc}
+% [...]
+\begin{document}
+#+END_SRC
+Ensuite =babel= avec l'option =frenchb= pour mettre certaines choses en français
+comme \og Table des matières \fg. 
+#+BEGIN_SRC latex
+\usepackage[frenchb]{babel}
+% [...]
+\begin{document}
+#+END_SRC
+
+Mais il manque les tableaux
+#+BEGIN_SRC latex
+\usepackage{caption}
+\captionsetup[table]{name=Tableau}
+% [...]
+\begin{document}
+#+END_SRC
+
+Ceci va faire que la commande =\caption= va imprimer «Tableau N» au lieu
+de  «Table N»
+#+BEGIN_SRC latex
+\begin{document}
+\begin{table}
+  \centering
+  \begin{tabular}{c|c}
+    a & b \\ \hline
+    c & d \\
+    e & f
+  \end{tabular}
+  \caption{((Titre du tableau))}
+\end{table}
+\end{document}
+#+END_SRC
+
+Et finalement le package =fontenc=.  Ça aide LaTeX à produire un output en
+français au niveau des polices de caractères. Plus sur
+https://tex.stackexchange.com/a/44699/125513
+#+BEGIN_SRC latex
+\usepackage[T1]{fontenc}
+% [...]
+\begin{document}
+#+END_SRC
+*** BibTeX
+Pour faire des bibliographies en LaTeX, ça peut avoir l'air super compliqué mais
+ça ne l'est pas.  C'est juste difficile de trouver comment faire expliqué de
+façon simple.
+
+1. Faire un fichier un genre =JSON= avec des objets pour chaque références et
+   chaque objet a un attribut «clé» qu'on utilise pour citer la référence dans
+   le texte
+2. Citer des références dans le texte en y référant avec cette clé.
+3. Mettre trois quatres commandes à la fin du document pour demander à LaTeX
+   d'insérer la bibliographie.
+4. Runner LaTeX ensuite BibTex ensuite LaTeX deux fois.
+
+**** Packages
+
+On n'a pas besoin de package pour faire de bibliographie avec LaTeX, mais on a
+besoin de 
+#+BEGIN_SRC latex
+\usepackage{apacite}
+% [...]
+\begin{document}
+#+END_SRC
+**** Base de données de références
+Voici un exemple d'«objet» BibTeX:
+#+BEGIN_SRC bibtex
+@article{monbiot,
+	title = {Advertising is a poison that demeans even love – and we're hooked on it},
+	author= {George Monbiot},
+	journal = {The Guardian},
+	organization = {The Guardian},
+	Year = {2011},
+	retrieved = {14 Novembre 2017},
+	url = {https://www.theguardian.com/\allowbreak commentisfree/\allowbreak 2011/oct/24/\allowbreak advertising-poison-hooked}
+}
+#+END_SRC
+Le =@article= indique le «entry type» et est utilisé pour contrôler le format de la
+référence.  C'est une bonne idée de consulter
+https://nwalsh.com/tex/texhelp/bibtx-7.html pour avoir la liste de ces types
+et les champs requis.
+
+La clé est le premier élément : =monbiot= et le reste des champs ont le format
+~champ = {valeur}~.  Cette clé est ce qui est utilisé pour citer.
+
+A noter aussi que dans la partie =url= on risque de retrouver des =_=
+(underscore), et c'est un caractère que LaTeX interprète.  Il faut donc les
+précéder d'un =\= pour simplement produire un caractère =_=.
+
+Finalement on doit souvent ajouter une trâlée de ~\allowbreak~ (suivi d'un
+espace) dans les URL parce que sinon LaTeX ne les brisera pas.
+
+**** Citer
+
+C'est la partie la plus facile: il suffit d'utiliser la commande =\cite=
+#+BEGIN_SRC latex
+\begin{document}
+De plus \citeA{monbiot} nous dit
+\end{document}
+#+END_SRC
+et le processus sera enclenché.
+
+**** Produire la bibliographie dans le fichier =.tex=
+Dans le fichier =.tex=, pour produre la bibliographie, c'est comme la table des
+	matières mais avec quelques extras.
+
+Je place ceci à la fin de mon document:
+
+#+BEGIN_SRC latex
+\singlespacing
+\bibliography{bibdb.bib}
+\bibliographystyle{apacite}
+\end{document}
+#+END_SRC
+**** Les commandes à rouler pour produire la bibliographie
+Et maintenant la partie spéciale!
+
+On doit rouler ces quatres commandes:
+
+#+BEGIN_SRC sh
+[phcarb@polymtl ~/Documents/GitHub/template_page_titre_poly] $ pdflatex main.tex
+[phcarb@polymtl ~/Documents/GitHub/template_page_titre_poly] $ bibtex main.aux
+[phcarb@polymtl ~/Documents/GitHub/template_page_titre_poly] $ pdflatex main.tex
+[phcarb@polymtl ~/Documents/GitHub/template_page_titre_poly] $ pdflatex main.tex
+#+END_SRC
+
+La premère fois crée un fichier =main.aux= dont =bibtex= va se servir pour
+savoir quelles références sont citées dans =main.tex=.
+
+Ensuite l'invocation de =bibtex= sur le fichier =main.aux=
+#+BEGIN_SRC sh
+[phcarb@polymtl ~/Documents/GitHub/template_page_titre_poly] $bibtex main.aux
+This is BibTeX, Version 0.99d (TeX Live 2015)
+The top-level auxiliary file: main.aux
+The style file: apacite.bst
+Database file #1: bibdb.bib.bib
+apacite.bst [2013/07/21 v6.03 APA bibliography style]
+#+END_SRC
+
+Ceci produit les fichiers =main.blg= et =main.bbl=.  Avec ça, quand on va rouler
+LaTeX une fois: ceci nous donne notre bibliographie, mais les citations sont
+encore des «(?)» dans le =pdf=.
+
+On roule LaTeX une dernière fois et finalement nos références sont remplies. 
+
+
+** Choses particulères à moi
+
+*** Le format de la page titre
+Le puisque je veux une page titre avec des marges différentes, je crée un autre
+=pdf= en LaTeX que j'inclu au tout début du document:
+#+BEGIN_SRC latex
+\usepackage[final]{pdfpages}
+\begin{document}
+\includepdf[pages=1]{page_titre.pdf}
+
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+#+END_SRC
+Et tout de suite après je met la table des matières.  Puisqu'elle doit être sur
+une page séparée pour Poly, je met =\thispagestyle{empty}= pour enlever le
+numéro page sur la page contenant la table des matières.
+
+Ensuite un =\newpage= pour forcer une nouvelle page.  Bien qu'on n'ait pas
+affiché de numéro de page pour la table des matières, celle-ci est quand même la
+page 1.  Il faut donc refixer le compteur de pages à 1.
+** Choses particulières à Poly
+
+*** Citations et bibliographie au format APA
+
+**** Citations
+
+**** Bibliographie
+
+*** Page titre
