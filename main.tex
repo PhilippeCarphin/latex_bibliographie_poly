@@ -1,12 +1,14 @@
 \documentclass[12pt]{article}
 
-\usepackage{setspace}
 \usepackage{geometry}
 \usepackage{setspace}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[frenchb]{babel}
 \usepackage[final]{pdfpages}
+
+\usepackage{caption}
+\captionsetup[table]{name=Tableau}
 
 
 \usepackage{apacite}
@@ -15,7 +17,6 @@
 \linespread{1.5}
 
 \begin{document}
-
 \includepdf[pages=1]{page_titre.pdf}
 \thispagestyle{empty}
 
@@ -23,6 +24,16 @@
 \tableofcontents
 \newpage
 \setcounter{page}{1}
+
+\begin{table}
+  \centering
+  \begin{tabular}{c|c}
+    a & b \\ \hline
+    c & d \\
+    e & f
+  \end{tabular}
+  \caption{((Titre du tableau))}
+\end{table}
 
 \section*{Introduction}
 
@@ -35,9 +46,21 @@ De plus \citeA{monbiot} nous dit
   [...] people’s mood and emotions have been successfully assessed from spoken and written language, video, or wearable devices and smartphone sensor data.
   \end{quote}
 
+  Voici un exemple fait à la main parce que si ce n'est pas le format exact
+  auquel poly s'attend, si la personne est très stricte, on peut aller sur
+
+  \[\verb+https://guides.biblio.polymtl.ca/citer_apa6/references+\]
+
+\singlespacing
+  Cadwalladr, C., Graham-Harrison, E. (17 mars 2018). Revealed: 50 million
+Facebook profiles harvested for Cambridge Analytica in major data breach. \emph{The Guardian}. Tiré de
+\texttt{https://\allowbreak theguardian.com\allowbreak/news\allowbreak/2018\allowbreak/mar\allowbreak/17\allowbreak/cambridge\allowbreak-analytica\allowbreak-facebook\allowbreak-in\allowbreak
+  fluence\allowbreak}
+
 
 \newpage
 
+\singlespacing
 \bibliography{bibdb.bib}
 \bibliographystyle{apacite}
 
